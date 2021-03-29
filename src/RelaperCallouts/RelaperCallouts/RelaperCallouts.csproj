@@ -39,6 +39,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -47,8 +48,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Callouts\ArmoredCarRobbery.cs" />
+    <Compile Include="Callouts\CalloutBase.cs" />
+    <Compile Include="Callouts\CalloutResponseType.cs" />
     <Compile Include="Main.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Util\BlipColor.cs" />
+    <Compile Include="Util\BlipExtensions.cs" />
+    <Compile Include="Util\MusicEvent.cs" />
+    <Compile Include="Util\ScannerMessages.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
