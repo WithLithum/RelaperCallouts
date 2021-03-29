@@ -109,6 +109,7 @@ namespace RelaperCallouts.Callouts
             }
 
             if (armoredCar) armoredCar.Dismiss();
+            if (vehicleBlip) vehicleBlip.Delete();
 
             base.End();
         }
