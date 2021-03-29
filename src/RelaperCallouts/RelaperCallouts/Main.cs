@@ -17,11 +17,19 @@ namespace RelaperCallouts
 
         public override void Initialize()
         {
-            Game.LogTrivial("Rel.C: Registering callouts...");
-            Functions.RegisterCallout(typeof(ArmoredCarRobbery));
+            Functions.OnOnDutyStateChanged += Functions_OnOnDutyStateChanged;
+        }
 
-            Game.DisplayNotification("web_lossantospolicedept", "web_lossantospolicedept", "RelaperCallouts", "~y~by RelaperCrystal", "~b~has been loaded. ~g~Enjoy!");
-            Game.LogTrivial("Rel.C: End initializing RelaperCallouts");
+        private void Functions_OnOnDutyStateChanged(bool onDuty)
+        {
+            if (onDuty)
+            {
+                Game.LogTrivial("Rel.C: Registering callouts...");
+                Functions.RegisterCallout(typeof(ArmoredCarRobbery));
+
+                Game.DisplayNotification("web_lossantospolicedept", "web_lossantospolicedept", "RelaperCallouts", "~y~by RelaperCrystal", "~b~has been loaded. ~g~Enjoy!");
+                Game.LogTrivial("Rel.C: End initializing RelaperCallouts");
+            }
         }
     }
 }

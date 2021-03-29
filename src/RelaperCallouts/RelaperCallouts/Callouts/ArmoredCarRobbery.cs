@@ -21,24 +21,6 @@ namespace RelaperCallouts.Callouts
         private LHandle pursuit;
         private bool inPursuit;
         private bool nearlyDone;
-        private readonly MusicEvent bgm = new MusicEvent("FH2B_NOOSE_FIGHT");
-
-        private static readonly Model[] models = new Model[]
-        {
-            "s_m_y_robber_01",
-            "hc_gunman",
-            "hc_driver",
-            "g_m_y_lost_01",
-            "g_m_y_lost_02",
-            "g_m_y_lost_03",
-            "g_m_y_ballaeast_01",
-            "g_m_y_ballaorig_01",
-            "g_m_y_famca_01",
-            "g_m_y_famdnf_01",
-            "g_m_y_famfor_01",
-            "g_m_y_strpunk_01",
-            "g_m_y_strpunk_02"
-        };
 
         protected override string Name => "Armored Truck Robbery";
 
@@ -61,7 +43,7 @@ namespace RelaperCallouts.Callouts
 
             for (int i = 0; i < MathHelper.GetRandomInteger(2, 4); i++)
             {
-                var ped = new Ped(models[MathHelper.GetRandomInteger(models.Length + 1)], SpawnPoint.Around(15f), 0f)
+                var ped = new Ped(SpawnPoint.Around(15f))
                 {
                     IsPersistent = true,
                     BlockPermanentEvents = true
@@ -135,16 +117,18 @@ namespace RelaperCallouts.Callouts
                     if (!robber.Exists() || robber.IsDead || Functions.IsPedArrested(robber))
                     {
                         counter++;
-                        Game.DisplayNotification($"~r~{Functions.GetPersonaForPed(robber).FullName} has been dealt with. ~y~{counter}/{robbers.Count} Remaining.");
                     }
                 }
 
-                if (counter == robbers.Count) this.nearlyDone = true;
+                if (counter == robbers.Count)
+                {
+                    Game.DisplayHelp("Press END to End the callout.");
+                }
 
-                if (!inPursuit && pursuit != null && Game.LocalPlayer.Character.Position.DistanceTo2D(armoredCar) < 30f && armoredCar.IsOnScreen)
+                if (!inPursuit && pursuit == null && Game.LocalPlayer.Character.Position.DistanceTo2D(armoredCar) < 30f && armoredCar.IsOnScreen)
                 {
                     inPursuit = true;
-                    bgm.Prepare();
+
                     vehicleBlip.Flash(200, -1); // make it flash
                     vehicleBlip.IsRouteEnabled = false;
 
@@ -163,7 +147,7 @@ namespace RelaperCallouts.Callouts
                     Functions.SetPursuitLethalForceForced(pursuit, true);
 
                     ScannerMessages.DisplayDispatchText("Armored Car Robbery", "Suspect fleeing.");
-                    bgm.Trigger();
+
                     Functions.RequestBackup(Game.LocalPlayer.Character.Position, EBackupResponseType.Pursuit, EBackupUnitType.NooseAirUnit);
                 }
 
@@ -171,7 +155,7 @@ namespace RelaperCallouts.Callouts
                 {
                     vehicleBlip.StopFlashing();
                     nearlyDone = true;
-                    bgm.Dismiss();
+
                 }
             }
         }
