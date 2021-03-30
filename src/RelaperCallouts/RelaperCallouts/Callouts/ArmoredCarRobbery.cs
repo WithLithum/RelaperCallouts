@@ -16,7 +16,6 @@ namespace RelaperCallouts.Callouts
     public class ArmoredCarRobbery : CalloutBase
     {
         private Vehicle armoredCar;
-        private Blip vehicleBlip;
         private readonly List<Ped> robbers = new List<Ped>();
 
         protected override string Name => "Armored Truck Robbery";
@@ -77,14 +76,14 @@ namespace RelaperCallouts.Callouts
                 robbers.Add(ped);
             }
 
-            vehicleBlip = new Blip(armoredCar)
+            Blip = new Blip(armoredCar)
             {
                 Sprite = BlipSprite.Enemy, // For some reason RPH uses GTAO blip (No 270)
                 IsFriendly = false,
                 IsRouteEnabled = true
             };
 
-            vehicleBlip.SetColor(BlipColor.Red); // use native blip color to match vanilla design :)
+            Blip.SetColor(BlipColor.Red); // use native blip color to match vanilla design :)
 
             return base.OnCalloutAccepted();
         }
@@ -102,7 +101,6 @@ namespace RelaperCallouts.Callouts
             }
 
             if (armoredCar) armoredCar.Dismiss();
-            if (vehicleBlip) vehicleBlip.Delete();
 
             base.End();
         }

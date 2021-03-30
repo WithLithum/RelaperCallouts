@@ -10,7 +10,6 @@ namespace RelaperCallouts.Callouts
     {
         private Ped robber;
         private Ped victim;
-        private Blip blip;
         private bool spooked;
         private LHandle pursuit;
         private bool tasking;
@@ -53,11 +52,13 @@ namespace RelaperCallouts.Callouts
                 BlockPermanentEvents = true
             };
 
-            blip = new Blip(robber.Position.Around(30f), 80f);
-            blip.SetColor(BlipColor.YellowDynamic);
-            blip.Alpha = 0.5f;
-            blip.IsRouteEnabled = true;
-
+            Blip = new Blip(robber.Position.Around(30f), 80f)
+            {
+                Alpha = 0.5f,
+                IsRouteEnabled = true
+            };
+            Blip.SetColor(BlipColor.YellowDynamic);
+            
             ScannerMessages.DisplayDispatchText("Mugging", "Find the ~r~robber ~w~and save the ~g~victim~w~ in the ~y~area~w~!");
 
             return base.OnCalloutAccepted();
@@ -81,7 +82,8 @@ namespace RelaperCallouts.Callouts
             if (!spooked && Game.LocalPlayer.Character.DistanceTo2D(robber) < 5f && robber.IsOnScreen)
             {
                 spooked = true;
-                if (blip) blip.Delete();
+                // Prevent cheating
+                if (Blip) Blip.Delete();
 
                 // 1/9 chance to shoot the victim
                 if (MathHelper.GetRandomInteger(10) == 2)
@@ -115,7 +117,6 @@ namespace RelaperCallouts.Callouts
 
         public override void End()
         {
-            if (blip) blip.Delete();
             if (pursuit != null && Functions.IsPursuitStillRunning(pursuit))
             {
                 Functions.ForceEndPursuit(pursuit);

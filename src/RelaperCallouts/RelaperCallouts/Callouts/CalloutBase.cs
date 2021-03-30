@@ -50,5 +50,11 @@ namespace RelaperCallouts.Callouts
             ScannerMessages.EndCall(Name);
             End();
         }
+
+        public override void End()
+        {
+            base.End();
+            if (Blip) Blip.Delete();
+        }
     }
 }

@@ -15,7 +15,6 @@ namespace RelaperCallouts.Callouts
     {
         private Vehicle car;
         private Ped thief;
-        private Blip blip;
 
         protected override string Name => "Stolen Vehicle";
 
@@ -49,12 +48,12 @@ namespace RelaperCallouts.Callouts
             thief.IsPersistent = true;
             thief.BlockPermanentEvents = true;
 
-            blip = car.AttachBlip();
-            blip.Sprite = BlipSprite.Enemy;
-            blip.Scale = 0.5f;
-            blip.SetColor(BlipColor.Red);
-            blip.SetRouteColor(BlipColor.Red);
-            blip.IsRouteEnabled = true;
+            Blip = car.AttachBlip();
+            Blip.Sprite = BlipSprite.Enemy;
+            Blip.Scale = 0.5f;
+            Blip.SetColor(BlipColor.Red);
+            Blip.SetRouteColor(BlipColor.Red);
+            Blip.IsRouteEnabled = true;
 
             var attribute = Functions.GetPedPursuitAttributes(thief);
             attribute.SurrenderChanceCarBadlyDamaged = 20.5f;
@@ -82,7 +81,6 @@ namespace RelaperCallouts.Callouts
         public override void End()
         {
             if (thief && !Functions.IsPedArrested(thief)) thief.Dismiss();
-            if (blip) blip.Delete();
             if (car) car.Dismiss();
 
             base.End();
