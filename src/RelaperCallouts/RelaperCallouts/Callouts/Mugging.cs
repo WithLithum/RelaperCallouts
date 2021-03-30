@@ -68,7 +68,7 @@ namespace RelaperCallouts.Callouts
         {
             if (!robber.Exists() || robber.IsDead || Functions.IsPedArrested(robber)) EndSuccess();
 
-            // When player is close, the suspect will now aim the player.
+            // When player is close, the suspect will now aim the victim.
             // This is observed and learned from Fighting call-out in United Call-outs.
             if (!tasking && Game.LocalPlayer.Character.DistanceTo(robber) < 50f && robber.IsOnScreen)
             {
@@ -94,6 +94,12 @@ namespace RelaperCallouts.Callouts
                     robber.Tasks.FightAgainst(victim, -1);
                     // Victim don't have any weapon...
                     victim.BlockPermanentEvents = false;
+
+                    Functions.PlayScannerAudioUsingPosition("RC_ATTENTION WE_HAVE CRIME_SHOTS_FIRED IN_OR_ON_POSITION RC_CODE3", Game.LocalPlayer.Character.Position);
+                }
+                else
+                {
+                    Functions.PlayScannerAudioUsingPosition("RC_ATTENTION WE_HAVE CRIME_RESIST_ARREST IN_OR_ON_POSITION RC_CODE3", Game.LocalPlayer.Character.Position);
                 }
 
                 // The victim will ran away as player will be close!
