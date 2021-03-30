@@ -60,7 +60,6 @@ namespace RelaperCallouts.Callouts
             attribute.SurrenderChanceCarBadlyDamaged = 20.5f;
             attribute.BurstTireMaxDrivingSpeedMult = 0.30f;
             attribute.SurrenderChancePitted = 34.2f;
-            attribute.MinDrivingSpeed = 100f;
             attribute.SurrenderChanceTireBurst = 20.2f;
             attribute.SurrenderChanceTireBurstAndCrashed = 50.2f;
             attribute.SurrenderChancePittedAndCrashed = 42.2f;
