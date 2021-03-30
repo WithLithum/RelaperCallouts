@@ -1,9 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 using LSPD_First_Response.Mod.API;
 using LSPD_First_Response.Mod.Callouts;
 using Rage;
@@ -19,6 +14,7 @@ namespace RelaperCallouts.Callouts
         private Blip blip;
         private bool spooked;
         private LHandle pursuit;
+        private bool tasking;
 
         protected override string Name => "Mugging";
 
@@ -59,9 +55,6 @@ namespace RelaperCallouts.Callouts
                 BlockPermanentEvents = true
             };
 
-            robber.Tasks.AimWeaponAt(victim, -1);
-            victim.Tasks.PutHandsUp(-1, robber);
-
             blip = new Blip(robber.Position.Around(30f), 80f);
             blip.SetColor(BlipColor.YellowDynamic);
             blip.Alpha = 0.5f;
@@ -77,10 +70,21 @@ namespace RelaperCallouts.Callouts
             if (!robber.Exists() || robber.IsDead || Functions.IsPedArrested(robber)) EndSuccess();
             if (!victim.Exists()) EndSuccess();
 
+            if (!tasking && Game.LocalPlayer.Character.DistanceTo(robber) < 35f && robber.IsOnScreen)
+            {
+                tasking = true;
+
+                robber.Tasks.AimWeaponAt(victim, -1);
+                victim.Tasks.PutHandsUp(-1, robber);
+            }
+
             if (!spooked && Game.LocalPlayer.Character.DistanceTo2D(robber) < 5f && robber.IsOnScreen)
             {
                 spooked = true;
                 if (blip) blip.Delete();
+
+                victim.Tasks.ReactAndFlee(robber);
+                victim.Dismiss();
 
                 pursuit = Functions.CreatePursuit();
                 Functions.AddPedToPursuit(pursuit, robber);

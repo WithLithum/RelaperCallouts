@@ -18,8 +18,6 @@ namespace RelaperCallouts.Callouts
         private Vehicle armoredCar;
         private Blip vehicleBlip;
         private readonly List<Ped> robbers = new List<Ped>();
-        private LHandle pursuit;
-        private bool inPursuit;
 
         protected override string Name => "Armored Truck Robbery";
 
