@@ -68,7 +68,7 @@ namespace RelaperCallouts.Callouts
             base.Process();
 
             if (!car) EndSuccess();
-            if (!thief || !thief.IsAlive || Functions.IsPedArrested(thief)) EndSuccess();
+            if (!thief || thief.IsDead || Functions.IsPedArrested(thief)) EndSuccess();
 
             if (!spooked && Game.LocalPlayer.Character.Position.DistanceTo2D(car) < 10f && car.IsOnScreen)
             {

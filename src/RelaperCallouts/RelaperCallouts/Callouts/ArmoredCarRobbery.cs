@@ -20,7 +20,6 @@ namespace RelaperCallouts.Callouts
         private readonly List<Ped> robbers = new List<Ped>();
         private LHandle pursuit;
         private bool inPursuit;
-        private bool nearlyDone;
 
         protected override string Name => "Armored Truck Robbery";
 
@@ -90,6 +89,11 @@ namespace RelaperCallouts.Callouts
                 }
             }
 
+            if (pursuit != null && Functions.IsPursuitStillRunning(pursuit))
+            {
+                Functions.ForceEndPursuit(pursuit);
+            }
+
             if (armoredCar) armoredCar.Dismiss();
             if (vehicleBlip) vehicleBlip.Delete();
 
@@ -100,63 +104,52 @@ namespace RelaperCallouts.Callouts
         {
             base.Process();
 
-            int counter = 0;
-
-            // End as in promise
-            if (Game.IsKeyDown(Keys.End)) EndSuccess();
-
             if (!armoredCar.Exists())
             {
                 EndSuccess();
             }
 
-            if (!nearlyDone)
+            for (int i = 0; i < robbers.Count; i++)
             {
-                foreach (var robber in robbers)
+                GameFiber.Yield();
+                if (!robbers[i].Exists() || robbers[i].IsDead || Functions.IsPedArrested(robbers[i]))
                 {
-                    if (!robber.Exists() || robber.IsDead || Functions.IsPedArrested(robber))
+                    robbers.RemoveAt(i);
+                }
+            }
+
+            if (robbers.Count == 0)
+            {
+                EndSuccess();
+            }
+
+            if (!inPursuit && pursuit == null && Game.LocalPlayer.Character.Position.DistanceTo2D(armoredCar) < 30f && armoredCar.IsOnScreen)
+            {
+                inPursuit = true;
+
+                vehicleBlip.Flash(200, -1); // make it flash
+                vehicleBlip.IsRouteEnabled = false;
+
+                pursuit = Functions.CreatePursuit();
+                foreach (var ped in robbers)
+                {
+                    if (ped.Exists() && ped.IsAlive && !Functions.IsPedArrested(ped))
                     {
-                        counter++; // we can't display it - screw stop the ped!
+                        Functions.AddPedToPursuit(pursuit, ped);
                     }
                 }
 
-                if (counter == robbers.Count)
-                {
-                    Game.DisplayHelp("Press END to End the callout.");
-                }
+                Functions.SetPursuitAsCalledIn(pursuit);
+                Functions.SetPursuitCopsCanJoin(pursuit, true);
+                Functions.SetPursuitIsActiveForPlayer(pursuit, true);
+                Functions.SetPursuitLethalForceForced(pursuit, true);
 
-                if (!inPursuit && pursuit == null && Game.LocalPlayer.Character.Position.DistanceTo2D(armoredCar) < 30f && armoredCar.IsOnScreen)
-                {
-                    inPursuit = true;
+                Functions.RequestBackup(Game.LocalPlayer.Character.Position, EBackupResponseType.Pursuit, EBackupUnitType.NooseAirUnit);
+            }
 
-                    vehicleBlip.Flash(200, -1); // make it flash
-                    vehicleBlip.IsRouteEnabled = false;
-
-                    pursuit = Functions.CreatePursuit();
-                    foreach (var ped in robbers)
-                    {
-                        if (ped.Exists() && ped.IsAlive && !Functions.IsPedArrested(ped))
-                        {
-                            Functions.AddPedToPursuit(pursuit, ped);
-                        }
-                    }
-
-                    Functions.SetPursuitAsCalledIn(pursuit);
-                    Functions.SetPursuitCopsCanJoin(pursuit, true);
-                    Functions.SetPursuitIsActiveForPlayer(pursuit, true);
-                    Functions.SetPursuitLethalForceForced(pursuit, true);
-
-                    ScannerMessages.DisplayDispatchText("Armored Car Robbery", "Suspect fleeing.");
-
-                    Functions.RequestBackup(Game.LocalPlayer.Character.Position, EBackupResponseType.Pursuit, EBackupUnitType.NooseAirUnit);
-                }
-
-                if (inPursuit && !Functions.IsPursuitStillRunning(pursuit))
-                {
-                    vehicleBlip.StopFlashing();
-                    nearlyDone = true;
-
-                }
+            if (inPursuit && !Functions.IsPursuitStillRunning(pursuit))
+            {
+                EndSuccess();
             }
         }
     }
