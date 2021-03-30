@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Rage;
+using Rage.Native;
 
 namespace RelaperCallouts.Util
 {
@@ -27,6 +28,15 @@ namespace RelaperCallouts.Util
         internal static Vector3 GenerateSpawnPointAroundPlayer(float min, float max)
         {
             return World.GetNextPositionOnStreet(Game.LocalPlayer.Character.Position.Around(min, max));
+        }
+
+        internal static bool TryGenerateSpawnPointOnPedWalk(float min, float max, bool pavement, out Vector3 result)
+        {
+            var pos = Vector3.Zero;
+            var streetPos = GenerateSpawnPointAroundPlayer(min, max);
+            bool success = NativeFunction.Natives.GET_SAFE_COORD_FOR_PED<bool>(streetPos.X, streetPos.Y, streetPos.Z, pavement, ref pos, 16);
+            result = pos;
+            return success;
         }
 
         internal static Model GetRandomCivilianCarModel()

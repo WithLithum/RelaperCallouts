@@ -26,8 +26,12 @@ namespace RelaperCallouts
             {
                 Game.LogTrivial("Rel.C: Registering callouts...");
                 Functions.RegisterCallout(typeof(ArmoredCarRobbery));
+                Functions.RegisterCallout(typeof(StolenVehicle));
+                Functions.RegisterCallout(typeof(Mugging));
 
                 Game.DisplayNotification("web_lossantospolicedept", "web_lossantospolicedept", "RelaperCallouts", "~y~by RelaperCrystal", "~b~has been loaded. ~g~Enjoy!");
+
+                Functions.OnOnDutyStateChanged -= Functions_OnOnDutyStateChanged;
                 Game.LogTrivial("Rel.C: End initializing RelaperCallouts");
             }
         }

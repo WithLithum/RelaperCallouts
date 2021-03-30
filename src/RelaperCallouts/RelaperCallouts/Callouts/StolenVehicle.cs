@@ -27,6 +27,7 @@ namespace RelaperCallouts.Callouts
         {
             SpawnPoint = SpawnUtil.GenerateSpawnPointAroundPlayer(300f, 600f);
             ResponseType = CalloutResponseType.Code2;
+            ReportedByUnits = false;
 
             // Don't let it get too far away!
             this.AddMaximumDistanceCheck(800f, SpawnPoint);
