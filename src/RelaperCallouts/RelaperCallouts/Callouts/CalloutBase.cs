@@ -17,6 +17,7 @@ namespace RelaperCallouts.Callouts
         protected abstract string ScannerCrimeName { get; }
         protected CalloutResponseType ResponseType { get; set; }
         protected bool ReportedByUnits { get; set; }
+        protected Blip Blip { get; set; }
 
         public override bool OnBeforeCalloutDisplayed()
         {
@@ -41,6 +42,9 @@ namespace RelaperCallouts.Callouts
             return base.OnCalloutAccepted();
         }
 
+        /// <summary>
+        /// Reports Code 4 to the player, then ends the <see cref="Callout"/>.
+        /// </summary>
         protected void EndSuccess()
         {
             ScannerMessages.EndCall(Name);

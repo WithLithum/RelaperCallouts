@@ -1,5 +1,4 @@
-﻿using System;
-using LSPD_First_Response.Mod.API;
+﻿using LSPD_First_Response.Mod.API;
 using LSPD_First_Response.Mod.Callouts;
 using Rage;
 using RelaperCallouts.Util;
@@ -22,8 +21,7 @@ namespace RelaperCallouts.Callouts
 
         public override bool OnBeforeCalloutDisplayed()
         {
-            Vector3 outP;
-            if (!SpawnUtil.TryGenerateSpawnPointOnPedWalk(300f, 600f, false, out outP))
+            if (!SpawnUtil.TryGenerateSpawnPointOnPedWalk(300f, 600f, false, out Vector3 outP))
             {
                 Game.LogTrivial("Rel.C: Failed to find spawn point");
                 return false;
@@ -70,6 +68,8 @@ namespace RelaperCallouts.Callouts
             if (!robber.Exists() || robber.IsDead || Functions.IsPedArrested(robber)) EndSuccess();
             if (!victim.Exists()) EndSuccess();
 
+            // When player is close, the suspect will now aim the player.
+            // This is observed and learned from Fighting call-out in United Call-outs.
             if (!tasking && Game.LocalPlayer.Character.DistanceTo(robber) < 35f && robber.IsOnScreen)
             {
                 tasking = true;
@@ -83,13 +83,26 @@ namespace RelaperCallouts.Callouts
                 spooked = true;
                 if (blip) blip.Delete();
 
+                // 1/9 chance to shoot the victim
+                if (MathHelper.GetRandomInteger(10) == 2)
+                {
+                    Functions.SetPursuitDisableAIForPed(robber, true);
+                    // Setting any ped to not block permanent events while they have a weapon
+                    // will simply make them fight back
+                    robber.BlockPermanentEvents = false;
+                    robber.Tasks.FightAgainst(victim, -1);
+                    // Victim don't have any weapon...
+                    victim.BlockPermanentEvents = false;
+                }
+
+                // The victim will ran away as player will be close!
                 victim.Tasks.ReactAndFlee(robber);
                 victim.Dismiss();
 
+                // Intended to let the player report the crime
                 pursuit = Functions.CreatePursuit();
                 Functions.AddPedToPursuit(pursuit, robber);
-                Functions.SetPursuitIsActiveForPlayer(pursuit, true);
-                // let the player call it in!
+                Functions.SetPursuitAsCalledIn(pursuit, false);
             }
 
             if (spooked && !Functions.IsPursuitStillRunning(pursuit))
