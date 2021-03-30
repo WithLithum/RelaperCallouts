@@ -28,6 +28,7 @@ namespace RelaperCallouts
                 Functions.RegisterCallout(typeof(ArmoredCarRobbery));
                 Functions.RegisterCallout(typeof(StolenVehicle));
                 Functions.RegisterCallout(typeof(Mugging));
+                Functions.RegisterCallout(typeof(FootPursuit));
 
                 Game.DisplayNotification("web_lossantospolicedept", "web_lossantospolicedept", "RelaperCallouts", "~y~by RelaperCrystal", "~b~has been loaded. ~g~Enjoy!");
 
