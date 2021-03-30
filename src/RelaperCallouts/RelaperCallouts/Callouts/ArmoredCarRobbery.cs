@@ -49,7 +49,7 @@ namespace RelaperCallouts.Callouts
                 };
 
                 // TODO a bit of randomization?
-                ped.Inventory.GiveNewWeapon(WeaponHash.MicroSMG, short.MaxValue, true);
+                ped.Inventory.GiveNewWeapon(WeaponHash.Smg, short.MaxValue, true);
                 
                 if (!driver) // make them warp into correct location
                 {
@@ -61,6 +61,20 @@ namespace RelaperCallouts.Callouts
                 {
                     ped.WarpIntoVehicle(armoredCar, -2);
                 }
+
+                var attribute = Functions.GetPedPursuitAttributes(ped);
+                attribute.SurrenderChancePittedAndCrashed = 10.2f;
+                attribute.SurrenderChancePittedAndSlowedDown = 5.2f;
+                attribute.SurrenderChanceCarBadlyDamaged = 23.2f;
+                attribute.AverageSurrenderTime = 8;
+                attribute.AverageFightTime = 2;
+                attribute.SurrenderChancePitted = 2.5f;
+                attribute.SurrenderChanceTireBurst = 1.2f;
+                attribute.SurrenderChanceTireBurstAndCrashed = 5.1f;
+                attribute.BurstTireMaxDrivingSpeedMult = 0.10f;
+                attribute.BurstTireSurrenderMult = 10;
+
+                Functions.SetPedResistanceChance(ped, 85.9f);
 
                 robbers.Add(ped);
             }
@@ -89,11 +103,6 @@ namespace RelaperCallouts.Callouts
                 }
             }
 
-            if (pursuit != null && Functions.IsPursuitStillRunning(pursuit))
-            {
-                Functions.ForceEndPursuit(pursuit);
-            }
-
             if (armoredCar) armoredCar.Dismiss();
             if (vehicleBlip) vehicleBlip.Delete();
 
@@ -119,35 +128,6 @@ namespace RelaperCallouts.Callouts
             }
 
             if (robbers.Count == 0)
-            {
-                EndSuccess();
-            }
-
-            if (!inPursuit && pursuit == null && Game.LocalPlayer.Character.Position.DistanceTo2D(armoredCar) < 30f && armoredCar.IsOnScreen)
-            {
-                inPursuit = true;
-
-                vehicleBlip.Flash(200, -1); // make it flash
-                vehicleBlip.IsRouteEnabled = false;
-
-                pursuit = Functions.CreatePursuit();
-                foreach (var ped in robbers)
-                {
-                    if (ped.Exists() && ped.IsAlive && !Functions.IsPedArrested(ped))
-                    {
-                        Functions.AddPedToPursuit(pursuit, ped);
-                    }
-                }
-
-                Functions.SetPursuitAsCalledIn(pursuit);
-                Functions.SetPursuitCopsCanJoin(pursuit, true);
-                Functions.SetPursuitIsActiveForPlayer(pursuit, true);
-                Functions.SetPursuitLethalForceForced(pursuit, true);
-
-                Functions.RequestBackup(Game.LocalPlayer.Character.Position, EBackupResponseType.Pursuit, EBackupUnitType.NooseAirUnit);
-            }
-
-            if (inPursuit && !Functions.IsPursuitStillRunning(pursuit))
             {
                 EndSuccess();
             }
