@@ -116,7 +116,7 @@ namespace RelaperCallouts.Callouts
                 {
                     if (!robber.Exists() || robber.IsDead || Functions.IsPedArrested(robber))
                     {
-                        counter++;
+                        counter++; // we can't display it - screw stop the ped!
                     }
                 }
 

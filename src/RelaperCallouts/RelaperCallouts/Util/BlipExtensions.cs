@@ -14,5 +14,10 @@ namespace RelaperCallouts.Util
         {
             NativeFunction.Natives.SET_BLIP_COLOUR(blip, (int)blipColor);
         }
+
+        public static void SetRouteColor(this Blip blip, BlipColor blipColor)
+        {
+            NativeFunction.Natives.SET_BLIP_ROUTE_COLOUR(blip, (int) blipColor);
+        }
     }
 }
