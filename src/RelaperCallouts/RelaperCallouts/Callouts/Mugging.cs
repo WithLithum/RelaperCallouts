@@ -27,7 +27,7 @@ namespace RelaperCallouts.Callouts
         public override bool OnBeforeCalloutDisplayed()
         {
             Vector3 outP;
-            if (!SpawnUtil.TryGenerateSpawnPointOnPedWalk(300f, 600f, true, out outP))
+            if (!SpawnUtil.TryGenerateSpawnPointOnPedWalk(300f, 600f, false, out outP))
             {
                 Game.LogTrivial("Rel.C: Failed to find spawn point");
                 return false;
