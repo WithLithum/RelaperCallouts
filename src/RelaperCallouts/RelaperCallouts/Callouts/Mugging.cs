@@ -67,7 +67,6 @@ namespace RelaperCallouts.Callouts
         public override void Process()
         {
             if (!robber.Exists() || robber.IsDead || Functions.IsPedArrested(robber)) EndSuccess();
-            if (!victim.Exists()) EndSuccess();
 
             // When player is close, the suspect will now aim the player.
             // This is observed and learned from Fighting call-out in United Call-outs.
