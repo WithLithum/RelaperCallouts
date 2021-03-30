@@ -70,7 +70,7 @@ namespace RelaperCallouts.Callouts
 
             // When player is close, the suspect will now aim the player.
             // This is observed and learned from Fighting call-out in United Call-outs.
-            if (!tasking && Game.LocalPlayer.Character.DistanceTo(robber) < 35f && robber.IsOnScreen)
+            if (!tasking && Game.LocalPlayer.Character.DistanceTo(robber) < 50f && robber.IsOnScreen)
             {
                 tasking = true;
 
