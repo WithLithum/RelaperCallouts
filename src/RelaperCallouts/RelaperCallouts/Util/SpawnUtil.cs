@@ -25,6 +25,21 @@ namespace RelaperCallouts.Util
             "SCHAFTER2"
         };
 
+        internal static WeaponHash GetRandomArmedRobberWeapon()
+        {
+            switch (MathHelper.GetRandomInteger(3))
+            {
+                case 0:
+                    return WeaponHash.PumpShotgun;
+
+                case 1:
+                    return WeaponHash.Smg;
+
+                default:
+                    return WeaponHash.MicroSMG;
+            }
+        }
+
         internal static Vector3 GenerateSpawnPointAroundPlayer(float min, float max)
         {
             return World.GetNextPositionOnStreet(Game.LocalPlayer.Character.Position.Around(min, max));

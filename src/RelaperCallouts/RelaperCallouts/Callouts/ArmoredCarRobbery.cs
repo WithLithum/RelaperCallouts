@@ -45,8 +45,7 @@ namespace RelaperCallouts.Callouts
                     BlockPermanentEvents = true
                 };
 
-                // TODO a bit of randomization?
-                ped.Inventory.GiveNewWeapon(WeaponHash.Smg, short.MaxValue, true);
+                ped.Inventory.GiveNewWeapon(SpawnUtil.GetRandomArmedRobberWeapon(), short.MaxValue, true);
                 
                 if (!driver) // make them warp into correct location
                 {
