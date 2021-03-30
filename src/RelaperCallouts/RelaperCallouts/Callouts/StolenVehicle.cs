@@ -15,9 +15,7 @@ namespace RelaperCallouts.Callouts
     {
         private Vehicle car;
         private Ped thief;
-        private LHandle pursuit;
         private Blip blip;
-        private bool spooked;
 
         protected override string Name => "Stolen Vehicle";
 
@@ -58,6 +56,17 @@ namespace RelaperCallouts.Callouts
             blip.SetRouteColor(BlipColor.Red);
             blip.IsRouteEnabled = true;
 
+            var attribute = Functions.GetPedPursuitAttributes(thief);
+            attribute.SurrenderChanceCarBadlyDamaged = 20.5f;
+            attribute.BurstTireMaxDrivingSpeedMult = 0.30f;
+            attribute.SurrenderChancePitted = 34.2f;
+            attribute.MinDrivingSpeed = 100f;
+            attribute.SurrenderChanceTireBurst = 20.2f;
+            attribute.SurrenderChanceTireBurstAndCrashed = 50.2f;
+            attribute.SurrenderChancePittedAndCrashed = 42.2f;
+
+            Functions.SetPedResistanceChance(thief, 80f);
+
             ScannerMessages.DisplayDispatchText("Stolen Vehicle", "Track down the ~g~vehicle~w~ and arrest the ~r~suspect.");
 
             return base.OnCalloutAccepted();
@@ -69,35 +78,10 @@ namespace RelaperCallouts.Callouts
 
             if (!car) EndSuccess();
             if (!thief || thief.IsDead || Functions.IsPedArrested(thief)) EndSuccess();
-
-            if (!spooked && Game.LocalPlayer.Character.Position.DistanceTo2D(car) < 10f && car.IsOnScreen)
-            {
-                spooked = true;
-
-                blip.IsRouteEnabled = false;
-                blip.Flash(500, -1);
-
-                Functions.PlayScannerAudioUsingPosition("RC_ATTENTION WE_HAVE CRIME_PERSON_FLEEING_A_CRIME_SCENE IN_OR_ON_POSITION RC_CODE3", Game.LocalPlayer.Character.Position);
-                pursuit = Functions.CreatePursuit();
-                Functions.AddPedToPursuit(pursuit, thief);
-                Functions.SetPursuitAsCalledIn(pursuit);
-                Functions.SetPursuitIsActiveForPlayer(pursuit, true);
-                Functions.SetPursuitCopsCanJoin(pursuit, true);
-            }
-
-            if (spooked && !Functions.IsPursuitStillRunning(pursuit))
-            {
-                EndSuccess();
-            }
         }
 
         public override void End()
         {
-            if (pursuit != null && Functions.IsPursuitStillRunning(pursuit))
-            {
-                Functions.ForceEndPursuit(pursuit);
-            }
-
             if (thief && !Functions.IsPedArrested(thief)) thief.Dismiss();
             if (blip) blip.Delete();
             if (car) car.Dismiss();
