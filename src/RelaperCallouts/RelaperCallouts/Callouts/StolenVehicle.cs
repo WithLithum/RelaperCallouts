@@ -29,7 +29,7 @@ namespace RelaperCallouts.Callouts
             ReportedByUnits = false;
 
             // Don't let it get too far away!
-            this.AddMaximumDistanceCheck(800f, SpawnPoint);
+            this.AddMaximumDistanceCheck(650f, SpawnPoint);
             this.AddMinimumDistanceCheck(280f, SpawnPoint);
 
             return base.OnBeforeCalloutDisplayed();
