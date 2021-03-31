@@ -12,6 +12,7 @@ namespace RelaperCallouts.Callouts
     {
         private LHandle pursuit;
         private Ped cop;
+        private Ped passenger;
         private Ped suspect;
 
         protected override string Name => "Foot Pursuit";
@@ -53,15 +54,27 @@ namespace RelaperCallouts.Callouts
             }
 
             chaser.IsPersistent = true;
-            chaser.Position = World.GetNextPositionOnStreet(SpawnPoint);        
+            chaser.Position = World.GetNextPositionOnStreet(SpawnPoint);
+
+            var openDoor = MathHelper.GetRandomInteger(4) == 2;
 
             cop = chaser.Driver;
             cop.IsPersistent = true;
             cop.Tasks.LeaveVehicle(LeaveVehicleFlags.WarpOut);
+            if (openDoor) chaser.Doors[0].Open(true);
+
+            if (!chaser.IsSeatFree(0))
+            {
+                passenger = chaser.GetPedOnSeat(0);
+                passenger.IsPersistent = true;
+                passenger.Tasks.LeaveVehicle(LeaveVehicleFlags.WarpOut);
+                if (openDoor) chaser.Doors[1].Open(true);
+            }
 
             pursuit = Functions.CreatePursuit();
             Functions.AddPedToPursuit(pursuit, suspect);
             Functions.AddCopToPursuit(pursuit, cop);
+            if (passenger) Functions.AddCopToPursuit(pursuit, passenger);
             Functions.SetPursuitAsCalledIn(pursuit);
             Functions.SetPursuitIsActiveForPlayer(pursuit, true);
 
@@ -82,6 +95,7 @@ namespace RelaperCallouts.Callouts
         public override void End()
         {
             if (cop) cop.Dismiss();
+            if (passenger) passenger.Dismiss();
             if (suspect && !Functions.IsPedArrested(suspect)) suspect.Dismiss();
 
             base.End();
