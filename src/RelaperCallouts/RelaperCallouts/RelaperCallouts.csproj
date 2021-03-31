@@ -54,8 +54,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Callouts\ArmoredCarRobbery.cs" />
-    <Compile Include="Callouts\CalloutBase.cs" />
-    <Compile Include="Callouts\CalloutResponseType.cs" />
+    <Compile Include="Callouts\Framework\CalloutBase.cs" />
+    <Compile Include="Callouts\Framework\CalloutResponseType.cs" />
     <Compile Include="Callouts\FootPursuit.cs" />
     <Compile Include="Callouts\Mugging.cs" />
     <Compile Include="Callouts\StolenVehicle.cs" />

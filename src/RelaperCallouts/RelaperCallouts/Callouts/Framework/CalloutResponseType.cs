@@ -1,4 +1,4 @@
-﻿namespace RelaperCallouts
+﻿namespace RelaperCallouts.Callouts.Framework
 {
     public enum CalloutResponseType
     {
