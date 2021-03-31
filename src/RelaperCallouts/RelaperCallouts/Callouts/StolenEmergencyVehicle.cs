@@ -1,4 +1,5 @@
-﻿using LSPD_First_Response.Mod.API;
+﻿using LSPD_First_Response;
+using LSPD_First_Response.Mod.API;
 using LSPD_First_Response.Mod.Callouts;
 using Rage;
 using RelaperCallouts.Callouts.Framework;
@@ -46,13 +47,44 @@ namespace RelaperCallouts.Callouts
             {
                 vehicle.Windows[0].Smash();
                 vehicle.IsStolen = true;
+                ScannerMessages.DisplayDispatchText("Stolen Emergency Vehicle", "The vehicle was ~r~stolen~w~ from police station. Chase the suspect.");
             }
             else
             {
                 thief.Inventory.GiveNewWeapon(WeaponHash.Pistol, 90, true);
+                ScannerMessages.DisplayDispatchText("Stolen Emergency Vehicle", "The vehicle was ~r~hijacked~w~.");
+                this.ResponseType = CalloutResponseType.Code99;
             }
 
+            pursuit = Functions.CreatePursuit();
+            Functions.AddPedToPursuit(pursuit, thief);
+            Functions.SetPursuitIsActiveForPlayer(pursuit, true);
+            Functions.SetPursuitCopsCanJoin(pursuit, true);
+            Functions.RequestBackup(thief.Position, EBackupResponseType.Pursuit, EBackupUnitType.LocalUnit);
+            Functions.RequestBackup(thief.Position, EBackupResponseType.Pursuit, EBackupUnitType.LocalUnit);
+            Functions.RequestBackup(thief.Position, EBackupResponseType.Pursuit, EBackupUnitType.LocalUnit);
+            Functions.RequestBackup(thief.Position, EBackupResponseType.Pursuit, EBackupUnitType.AirUnit);
+
             return base.OnCalloutAccepted();
+        }
+
+        public override void Process()
+        {
+            if (!thief || !Functions.IsPursuitStillRunning(pursuit))
+            {
+                EndSuccess();
+            }
+
+            base.Process();
+        }
+
+        public override void End()
+        {
+            if (thief && !Functions.IsPedArrested(thief)) thief.Dismiss();
+            if (vehicle) vehicle.Dismiss();
+            if (Functions.IsPursuitStillRunning(pursuit)) Functions.ForceEndPursuit(pursuit);
+
+            base.End();
         }
     }
 }
