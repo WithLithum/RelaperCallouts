@@ -78,6 +78,7 @@ namespace RelaperCallouts.Callouts
             attribute.SurrenderChancePittedAndCrashed = 42.2f;
 
             Functions.SetPedResistanceChance(thief, 80f);
+            thief.Tasks.CruiseWithVehicle(30f);
 
             ScannerMessages.DisplayDispatchText("Stolen Vehicle", "Track down the ~g~vehicle~w~ and arrest the ~r~suspect.");
 

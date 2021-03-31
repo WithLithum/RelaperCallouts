@@ -70,5 +70,8 @@
     <Compile Include="Util\ScannerMessages.cs" />
     <Compile Include="Util\SpawnUtil.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="TODO.txt" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
