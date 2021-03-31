@@ -83,5 +83,13 @@ namespace RelaperCallouts.Callouts
                 EndSuccess();
             }
         }
+
+        public override void End()
+        {
+            if (cop) cop.Dismiss();
+            if (suspect && !Functions.IsPedArrested(suspect)) suspect.Dismiss();
+
+            base.End();
+        }
     }
 }
