@@ -1,0 +1,58 @@
+RelaperCallouts Development Internal Interface
+Documentation Version 2021/3/31.1
+
+Callouts Framework
+-----------------------------------------------------
+Every single callout in this project shall inherit CalloutBase instead of
+directly inheriting LSPDFR Callout class.
+
+It provides these features that shared between different callouts:
+ - A spawnpoint management system
+ - Name and common Police Scanner Dialogue system
+ - Auto display of Response Code (Code2, Code3, etc.)
+ - Blip management
+
+-- EndSuccess()
+   Reports a message of Code 4 then ends the callout.
+
+-- OnBeforeCalloutDisplayed()
+   It does the following things:
+   - Manages the spawn point dedicated by the subclasses.
+   - Creating callout area blip before accepting.
+   - Plays the police scanner audio.
+
+   In order to let it work, the subclass must:
+   - Sets a spawn point.
+   - Determines whether this call is reported by officers.
+   - Sets a response code (you can also set it below).
+
+-- OnCalloutAccepted()
+   It does one thing before handing it over to LSPDFR, which is displaying the
+   response code.
+   Subclasses can set response code here.
+
+-- End()
+   It cleans up the blip before handing it over to LSPDFR.
+
+Utils and Helpers
+-----------------------------------------------------
+-- BlipExtensions.SetColor(this Blip blip, BlipColor color)
+ / BlipExtensions.SetRouteColor(this Blip blip, BlipColor color)
+   -- Arguments:
+      - blip: Blip to set the color.
+      - color: Color index.
+   Sets the game defined color instead of Drawing color.
+
+-- GenerateSpawnPointAroundPlayer(float min, float max)
+   -- Arguments:
+      - min: Minimum distance.
+      - max: Maximum distance.
+   Generates a spawn point in the middle of the road around the player.
+
+-- TryGenerateSpawnPointOnPedWalk(float min, float max, bool pavement, out Vector3 result)
+   -- Arguments:
+      - min: Minimum distance.
+      - max: Maximum distance.
+      - pavement: Whether to get pavement.
+      - result: the result.
+   Gets a spawn point in somewhere can let peds safe to walk.

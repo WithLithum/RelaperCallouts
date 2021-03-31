@@ -111,6 +111,7 @@ namespace RelaperCallouts.Callouts
                 pursuit = Functions.CreatePursuit();
                 Functions.AddPedToPursuit(pursuit, robber);
                 Functions.SetPursuitAsCalledIn(pursuit, false);
+                Functions.SetPursuitIsActiveForPlayer(pursuit, true);
             }
 
             if (spooked && !Functions.IsPursuitStillRunning(pursuit))

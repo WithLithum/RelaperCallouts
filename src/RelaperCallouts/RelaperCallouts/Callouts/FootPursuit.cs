@@ -75,8 +75,8 @@ namespace RelaperCallouts.Callouts
             Functions.AddPedToPursuit(pursuit, suspect);
             Functions.AddCopToPursuit(pursuit, cop);
             if (passenger) Functions.AddCopToPursuit(pursuit, passenger);
-            Functions.SetPursuitAsCalledIn(pursuit);
             Functions.SetPursuitIsActiveForPlayer(pursuit, true);
+            Functions.SetPursuitCopsCanJoin(pursuit, true);
 
             ScannerMessages.DisplayDispatchText("Foot Pursuit", "Get to the target and catch the suspect!");
             return base.OnCalloutAccepted();
