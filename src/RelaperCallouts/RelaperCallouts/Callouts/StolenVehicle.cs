@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using LSPD_First_Response.Engine.Scripting.Entities;
 using LSPD_First_Response.Mod.API;
 using LSPD_First_Response.Mod.Callouts;
 using Rage;
+using RelaperCallouts.Extern;
 using RelaperCallouts.Util;
 
 namespace RelaperCallouts.Callouts
@@ -43,10 +45,22 @@ namespace RelaperCallouts.Callouts
 
             car.Windows[0].Smash(); // so it's stolen recently
             car.DirtLevel = MathHelper.GetRandomSingle(0f, 15f); // add some dirt
+            car.IsStolen = true;
+
+            // Only if STP installed
+            if (ExternManager.StopThePedInstalled && MathHelper.GetRandomInteger(0, 5) == 3)
+            {
+                StopThePedFunctions.SetVehicleHasNoRegistration(car);
+            }
 
             thief = car.CreateRandomDriver();
             thief.IsPersistent = true;
             thief.BlockPermanentEvents = true;
+
+            if (MathHelper.GetRandomInteger(0, 4) == 2)
+            {
+                Functions.AddPedContraband(thief, ContrabandType.Misc, "Brick");
+            }
 
             Blip = car.AttachBlip();
             Blip.Sprite = BlipSprite.Enemy;

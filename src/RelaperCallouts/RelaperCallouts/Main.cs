@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using LSPD_First_Response.Mod.API;
 using Rage;
 using RelaperCallouts.Callouts;
+using RelaperCallouts.Extern;
 
 namespace RelaperCallouts
 {
@@ -29,6 +30,7 @@ namespace RelaperCallouts
                 Functions.RegisterCallout(typeof(StolenVehicle));
                 Functions.RegisterCallout(typeof(Mugging));
                 Functions.RegisterCallout(typeof(FootPursuit));
+                ExternManager.Init();
 
                 Game.DisplayNotification("web_lossantospolicedept", "web_lossantospolicedept", "RelaperCallouts", "~y~by RelaperCrystal", "~b~has been loaded. ~g~Enjoy!");
 
