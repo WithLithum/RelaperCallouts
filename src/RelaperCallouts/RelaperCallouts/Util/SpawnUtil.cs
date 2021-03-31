@@ -25,6 +25,20 @@ namespace RelaperCallouts.Util
             "SCHAFTER2"
         };
 
+        private static readonly Model[] emergencyCarModels = new Model[]
+        {
+            "POLICE",
+            "POLICE2",
+            "POLICE3",
+            "POLICE4",
+            "POLICEB",
+            "FBI",
+            "FBI2",
+            "AMBULANCE",
+            "FIRETRUCK",
+            "RIOT"
+        };
+
         internal static WeaponHash GetRandomArmedRobberWeapon()
         {
             switch (MathHelper.GetRandomInteger(3))
@@ -57,6 +71,11 @@ namespace RelaperCallouts.Util
         internal static Model GetRandomCivilianCarModel()
         {
             return civilianCarModels[MathHelper.GetRandomInteger(civilianCarModels.Length + 1)];
+        }
+
+        internal static Model GetRandomEmergencyCarModel()
+        {
+            return emergencyCarModels[MathHelper.GetRandomInteger(emergencyCarModels.Length + 1)];
         }
     }
 }

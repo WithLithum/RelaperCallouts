@@ -54,10 +54,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Callouts\ArmoredCarRobbery.cs" />
+    <Compile Include="Callouts\DrivingUnderInfluence.cs" />
     <Compile Include="Callouts\Framework\CalloutBase.cs" />
     <Compile Include="Callouts\Framework\CalloutResponseType.cs" />
     <Compile Include="Callouts\FootPursuit.cs" />
     <Compile Include="Callouts\Mugging.cs" />
+    <Compile Include="Callouts\StolenEmergencyVehicle.cs" />
     <Compile Include="Callouts\StolenVehicle.cs" />
     <Compile Include="Extern\ExternManager.cs" />
     <Compile Include="Extern\StopThePedFunctions.cs" />

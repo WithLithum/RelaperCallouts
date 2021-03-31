@@ -4,6 +4,7 @@ LEGENDS
 "-" means a bug, crash or malfunction
 "*" means a TODO except for new call-out
 "+" means a new call-out requirement
+"#" means a test
 
 BUGS
 ------------------------------------------------------------------
@@ -11,7 +12,9 @@ BUGS
 
 TODO
 ------------------------------------------------------------------
-+ NEW CALLOUT: Stolen Emergency Vehicle
+# TESTING: Stolen Emergency Vehicle
 + NEW CALLOUT: DUI / Reckless Driver
 + NEW CALLOUT: Gun Fight
 + NEW CALLOUT: Assault
++ NEW CALLOUT: Firearm attack on officer
++ NEW CALLOUT: Troublemaker at Public
