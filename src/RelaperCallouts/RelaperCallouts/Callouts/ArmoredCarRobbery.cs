@@ -8,6 +8,7 @@ using LSPD_First_Response;
 using LSPD_First_Response.Mod.API;
 using LSPD_First_Response.Mod.Callouts;
 using Rage;
+using RelaperCallouts.Callouts.Framework;
 using RelaperCallouts.Util;
 
 namespace RelaperCallouts.Callouts
