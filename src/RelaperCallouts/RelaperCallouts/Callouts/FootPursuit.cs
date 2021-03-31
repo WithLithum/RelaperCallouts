@@ -36,7 +36,6 @@ namespace RelaperCallouts.Callouts
 
             this.AddMinimumDistanceCheck(200f, spawn);
             this.AddMaximumDistanceCheck(500f, spawn);
-            this.ShowCalloutAreaBlipBeforeAccepting(spawn, 80f);
 
             return base.OnBeforeCalloutDisplayed();
         }

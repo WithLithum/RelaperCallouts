@@ -18,13 +18,14 @@ namespace RelaperCallouts.Callouts
         protected CalloutResponseType ResponseType { get; set; }
         protected bool ReportedByUnits { get; set; }
         protected Blip Blip { get; set; }
+        protected virtual float BeforeAcceptBlipRange => 50f;
 
         public override bool OnBeforeCalloutDisplayed()
         {
             this.CalloutPosition = SpawnPoint;
             this.CalloutMessage = Name;
 
-            this.ShowCalloutAreaBlipBeforeAccepting(SpawnPoint, 50f);
+            this.ShowCalloutAreaBlipBeforeAccepting(SpawnPoint, BeforeAcceptBlipRange);
 
             string audioString = "RC_ATTENTION ";
             audioString += ReportedByUnits ? "OFFICERS_REPORT" : "CITIZENS_REPORT";

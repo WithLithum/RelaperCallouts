@@ -5,17 +5,13 @@ LEGENDS
 "*" means a TODO except for new call-out
 "+" means a new call-out requirement
 
-=========================================
-FOOT  PURSUIT
-=========================================
-- There are two before accept blips and one does not disappear
-
-=========================================
-STOLEN  VEHICLE
-=========================================
+BUGS
+------------------------------------------------------------------
 
 
-=========================================
-INFRASTRFUCTURE
-=========================================
-* Make CalloutBase expose range of before accept blip
+TODO
+------------------------------------------------------------------
++ NEW CALLOUT: Stolen Emergency Vehicle
++ NEW CALLOUT: DUI / Reckless Driver
++ NEW CALLOUT: Gun Fight
++ NEW CALLOUT: Assault
