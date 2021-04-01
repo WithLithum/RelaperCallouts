@@ -107,10 +107,11 @@ namespace RelaperCallouts.Callouts
                 victim.Tasks.ReactAndFlee(robber);
                 victim.Dismiss();
 
-                // Intended to let the player report the crime
+                // There is no way to create a proper pursuit without setting
+                // it to called in behavior.
                 pursuit = Functions.CreatePursuit();
                 Functions.AddPedToPursuit(pursuit, robber);
-                Functions.SetPursuitAsCalledIn(pursuit, false);
+                Functions.SetPursuitAsCalledIn(pursuit, true);
                 Functions.SetPursuitIsActiveForPlayer(pursuit, true);
             }
 
