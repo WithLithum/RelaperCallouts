@@ -35,6 +35,12 @@ namespace RelaperCallouts.Callouts
             vehicle = new Vehicle(SpawnUtil.GetRandomEmergencyCarModel(), SpawnPoint);
             vehicle.IsPersistent = true;
 
+            if (!vehicle) // vehicle fails to be created
+            {
+                Game.LogTrivial("Rel.C: Vehicle does not exists");
+                return false;
+            }
+
             thief = new Ped(SpawnPoint.Around(1.5f))
             {
                 IsPersistent = true,
@@ -43,10 +49,22 @@ namespace RelaperCallouts.Callouts
 
             thief.WarpIntoVehicle(vehicle, -1);
 
+            if (!thief)
+            {
+                Game.LogTrivial("Rel.C: Thief does not exists");
+                return false;
+            }
+
             if (MathHelper.GetRandomInteger(5) != 3)
             {
-                vehicle.Windows[0].Smash();
+                var window = vehicle.Windows[0];
+                if (!vehicle.Exists())
+                {
+                    Game.LogTrivial("Rel.C: Vehicle does not exist when breaking the window");
+                    return false;
+                }
                 vehicle.IsStolen = true;
+                window.Smash();
                 ScannerMessages.DisplayDispatchText("Stolen Emergency Vehicle", "The vehicle was ~r~stolen~w~ from police station. Chase the suspect.");
             }
             else
@@ -58,6 +76,7 @@ namespace RelaperCallouts.Callouts
 
             pursuit = Functions.CreatePursuit();
             Functions.AddPedToPursuit(pursuit, thief);
+            Functions.SetPursuitAsCalledIn(pursuit);
             Functions.SetPursuitIsActiveForPlayer(pursuit, true);
             Functions.SetPursuitCopsCanJoin(pursuit, true);
             Functions.RequestBackup(thief.Position, EBackupResponseType.Pursuit, EBackupUnitType.LocalUnit);

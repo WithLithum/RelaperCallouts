@@ -8,14 +8,16 @@ LEGENDS
 
 BUGS
 ------------------------------------------------------------------
-- Pursuit don't start in Mugging
-- Callouts are not registered
 
 TODO
 ------------------------------------------------------------------
+- Vehicle Window invalid in Stolen Emergency Vehicle
+- Blip don't disappear in Stolen Emergency Vehicle
+- Pursuit became null in Stolen Emergency Vehicle
+- Pursuit disappears in Stolen Emergency Vehicle
 # TESTING: Stolen Emergency Vehicle
-# TESTING: DUI / Reckless Driver
 + NEW CALLOUT: Gun Fight
 + NEW CALLOUT: Assault
 + NEW CALLOUT: Firearm attack on officer
 + NEW CALLOUT: Troublemaker at Public
+* Ambient Event system

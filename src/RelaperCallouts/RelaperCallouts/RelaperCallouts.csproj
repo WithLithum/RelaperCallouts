@@ -71,6 +71,8 @@
     <Compile Include="Util\MusicEvent.cs" />
     <Compile Include="Util\ScannerMessages.cs" />
     <Compile Include="Util\SpawnUtil.cs" />
+    <Compile Include="WorldEvents\Framework\WorldEvent.cs" />
+    <Compile Include="WorldEvents\Framework\WorldEventManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="TODO.txt" />
